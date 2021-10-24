@@ -1,16 +1,29 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { PaisService } from '../../services/pais.service';
+import { Country } from '../../interfaces/pais.interface';
 
 @Component({
   selector: 'app-ver-pais',
   templateUrl: './ver-pais.component.html',
-  styles: [
-  ]
+  styles: [],
 })
 export class VerPaisComponent implements OnInit {
+  pais!: Country;
 
-  constructor() { }
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private paisService: PaisService
+  ) {}
 
   ngOnInit(): void {
-  }
+    this.activatedRoute.params.subscribe(({ id }) => {
+      console.log(id);
 
+      this.paisService.getPaisPorAlpha(id).subscribe((arrayPais) => {
+        console.log(arrayPais[0]);
+        this.pais = arrayPais[0];
+      });
+    });
+  }
 }
